@@ -1,15 +1,31 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+  </div>
+  <table-generation
+    :table_data = TABLE
+  />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TableGeneration from "@/components/TableGeneration";
+import axios from "axios";
+
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TableGeneration
+  },
+  data: () => {
+    return {
+      TABLE: Array
+    };
+  },
+  mounted() {
+    axios
+        .get('http://localhost:3000/table')
+        .then(response => (this.TABLE = response.data));
   }
 }
 </script>
