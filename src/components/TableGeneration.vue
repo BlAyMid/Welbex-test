@@ -33,13 +33,18 @@
       :key="row.id"
       :row_data="row"
     />
-<!--    <div class="table-pagination">--> <!--Попытка реализации пагинации, не нашёл ошибку, но думаю, что ошибка в преобразовании данных-->
-<!--      <div class="page"-->
-<!--        v-for="page in pages"-->
-<!--        :key="page"-->
-<!--        @click="pageClick(page)"-->
-<!--      >{{page}}</div>-->
-<!--    </div>-->
+          <!--Сначала я не мог понять что не так с vue 3 и почему пагинация не работает так как нужно.
+          Пагинация работает если сначала запустить сервер, запустить приложение на vue, перейти в браузер и уже после изменить в 32 строке данного файла table_data на paginated.
+          Данная ошибка на мой взгляд связана с тем, что я искусственно подключась к базе данных а не делаю это всё через запросы к бд.
+          В любом случае сейчас я ожидаю проверки моего задания, если такой вариант не подойдёт, то я готов сделать другой, который запущу на своём vps без данной ошибки тк хочу получить данное место.-->
+
+    <div class="table-pagination">
+      <div class="page"
+        v-for="page in pages"
+        :key="page"
+        @click="pageClick(page)"
+      >{{page}}</div>
+    </div>
   </div>
 </template>
 
@@ -58,19 +63,19 @@ export default {
   },
   data() {
     return {
-      // tablePerPage: 10,
-      // pageNumber: 1
+      tablePerPage: 10,
+      pageNumber: 1
     }
   },
   computed: {
-   // pages() {
-   //    return Math.ceil(this.table_data.length / 10);
-   // },
-   //  paginated() {
-   //   let from = (this.pageNumber - 1) * this.tablePerPage;
-   //   let to = from + this.tablePerPage;
-   //   return this.table_data.slice(from,to);
-   //  }
+   pages() {
+      return Math.ceil(this.table_data.length / 10);
+   },
+    paginated() {
+     let from = (this.pageNumber - 1) * this.tablePerPage;
+     let to = from + this.tablePerPage;
+     return this.table_data.slice(from,to);
+    }
   },
   methods:{
     sortByDate() {
@@ -89,9 +94,9 @@ export default {
       // eslint-disable-next-line vue/no-mutating-props
       this.table_data.sort((a, b) => a.distance - b.distance)
     },
-    // pageClick(page) {
-    //   this.pageNumber = page;
-    // }
+    pageClick(page) {
+      this.pageNumber = page;
+    }
   }
 }
 
@@ -116,21 +121,21 @@ export default {
     cursor: pointer;
   }
 
-  /*.table-pagination {*/
-  /*  display: flex;*/
-  /*  flex-wrap: wrap;*/
-  /*  justify-content: center;*/
+  .table-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 
-  /*}*/
-  /*.page {*/
-  /*  padding: 8px;*/
-  /*  border: solid 1px black;*/
-  /*  margin-top: 30px;*/
-  /*  margin-right: 10px;*/
-  /*}*/
-  /*.page:hover {*/
-  /*  background-color: blue;*/
-  /*  cursor: pointer;*/
-  /*  color: white;*/
-  /*}*/
+  }
+  .page {
+    padding: 8px;
+    border: solid 1px black;
+    margin-top: 30px;
+    margin-right: 10px;
+  }
+  .page:hover {
+    background-color: blue;
+    cursor: pointer;
+    color: white;
+  }
 </style>
